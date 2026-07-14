@@ -1,0 +1,29 @@
+name: Bug Report
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: SDK Version
+      placeholder: "v0.1.0"
+    validations:
+      required: true
+  - type: input
+    id: go_version
+    attributes:
+      label: Go Version
+      placeholder: "1.25"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+    validations:
+      required: true
