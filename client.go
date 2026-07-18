@@ -112,7 +112,7 @@ func (c *Client) request(ctx context.Context, method, path string, body any, ide
 	if err != nil {
 		return nil, fmt.Errorf("request failed: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	requestID := resp.Header.Get("X-Request-ID")
 

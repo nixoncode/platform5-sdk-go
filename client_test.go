@@ -15,7 +15,7 @@ func setupTestServer(status int, body any) *httptest.Server {
 			w.Header().Set(k, v)
 		}
 		w.WriteHeader(status)
-		json.NewEncoder(w).Encode(body)
+		_ = json.NewEncoder(w).Encode(body)
 	}))
 }
 
@@ -69,7 +69,7 @@ func TestRateLimitError(t *testing.T) {
 		w.Header().Set("X-RateLimit-Remaining", "0")
 		w.Header().Set("X-Request-ID", "req-123")
 		w.WriteHeader(http.StatusTooManyRequests)
-		json.NewEncoder(w).Encode(map[string]any{
+		_ = json.NewEncoder(w).Encode(map[string]any{
 			"success": false,
 			"message": "Rate limited",
 			"errors":  "too_many_requests",
@@ -97,7 +97,7 @@ func TestSendsIdempotencyKey(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		gotKey = r.Header.Get("Idempotency-Key")
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(map[string]any{
+		_ = json.NewEncoder(w).Encode(map[string]any{
 			"success": true,
 			"message": "OK",
 			"data":    map[string]any{"message_id": "m1", "to": "+2547", "sender_name": "B", "parts": 1, "cost": 1.0, "currency": "KES", "status": "queued"},
@@ -121,18 +121,18 @@ func TestServiceMethods(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 
 		var body any
-		switch {
-		case r.URL.Path == "/v1/sms/send":
+		switch r.URL.Path {
+		case "/v1/sms/send":
 			body = map[string]any{
 				"success": true, "message": "SMS queued",
 				"data": map[string]any{"message_id": "m1", "to": "+2547", "sender_name": "B", "parts": 1, "cost": 1.0, "currency": "KES", "status": "queued"},
 			}
-		case r.URL.Path == "/v1/email/send":
+		case "/v1/email/send":
 			body = map[string]any{
 				"success": true, "message": "Email queued",
 				"data": map[string]any{"message_id": "e1", "status": "queued"},
 			}
-		case r.URL.Path == "/v1/balance":
+		case "/v1/balance":
 			body = map[string]any{
 				"success": true, "message": "Balance retrieved",
 				"data": map[string]any{"available_balance": 1250.50, "current_balance": 1500.00, "currency": "KES"},
@@ -146,7 +146,7 @@ func TestServiceMethods(t *testing.T) {
 				},
 			}
 		}
-		json.NewEncoder(w).Encode(body)
+		_ = json.NewEncoder(w).Encode(body)
 	}))
 	defer srv.Close()
 
