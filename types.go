@@ -6,7 +6,7 @@ type Config struct {
 	APIKey string
 
 	// BaseURL is the Platform5 API base URL.
-	// Defaults to http://localhost:8084.
+	// Defaults to https://api.advantaplus.ai.
 	BaseURL string
 }
 

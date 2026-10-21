@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-const defaultBaseURL = "http://localhost:8084"
+const defaultBaseURL = "https://api.advantaplus.ai"
 
 // Client is the Platform5 Developer API client.
 // Create one with [New], then call methods on the service accessors
