@@ -55,6 +55,16 @@ func main() {
     // Check balance
     balance, _ := client.Account().GetBalance(ctx)
     fmt.Printf("Balance: %.2f %s\n", balance.AvailableBalance, balance.Currency)
+
+    // Buy airtime
+    airtime, err := client.Airtime().Buy(ctx, platform5.BuyAirtimeRequest{
+        PhoneNumber: "+254712345678",
+        Amount:      100,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Airtime: %s (%s)\n", airtime.TransactionID, airtime.Status)
 }
 ```
 
@@ -75,6 +85,7 @@ platform5.New(platform5.Config{
 | `client.Email().Send(ctx, req)` | POST | `/v1/email/send` |
 | `client.Messages().Get(ctx, id)` | GET | `/v1/messages/{id}` |
 | `client.Account().GetBalance(ctx)` | GET | `/v1/balance` |
+| `client.Airtime().Buy(ctx, req)` | POST | `/v1/airtime/buy` |
 | `client.Health(ctx)` | GET | `/health` |
 
 ## Error Handling
@@ -107,7 +118,7 @@ if err != nil {
 
 ## Idempotency
 
-`SMS.Send()` and `Email.Send()` automatically generate a UUID v4 `Idempotency-Key` header for every request to prevent duplicate charges on retry.
+`SMS.Send()`, `Email.Send()`, and `Airtime.Buy()` automatically generate a UUID v4 `Idempotency-Key` header for every request to prevent duplicate charges on retry.
 
 ## Requirements
 

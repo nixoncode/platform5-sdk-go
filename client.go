@@ -26,6 +26,7 @@ type Client struct {
 	email    *emailService
 	messages *messagesService
 	account  *accountService
+	airtime  *airtimeService
 }
 
 // New creates a new Platform5 API client.
@@ -76,6 +77,14 @@ func (c *Client) Account() *accountService {
 		c.account = &accountService{client: c}
 	}
 	return c.account
+}
+
+// Airtime returns the Airtime service for buying mobile airtime.
+func (c *Client) Airtime() *airtimeService {
+	if c.airtime == nil {
+		c.airtime = &airtimeService{client: c}
+	}
+	return c.airtime
 }
 
 // Health checks whether the API is reachable.

@@ -17,5 +17,6 @@
 //   - [Client.Email] — send emails
 //   - [Client.Messages] — check delivery status
 //   - [Client.Account] — check balance
+//   - [Client.Airtime] — buy mobile airtime
 //   - [Client.Health] — health check
 package platform5

@@ -71,3 +71,21 @@ type BalanceResponse struct {
 	CurrentBalance   float64 `json:"current_balance"`
 	Currency         string  `json:"currency"`
 }
+
+// BuyAirtimeRequest is the request body for POST /v1/airtime/buy.
+type BuyAirtimeRequest struct {
+	PhoneNumber string  `json:"phone_number"`
+	Amount      float64 `json:"amount"`
+}
+
+// BuyAirtimeResponse is returned on a successful airtime purchase.
+type BuyAirtimeResponse struct {
+	TransactionID string  `json:"transaction_id"`
+	PhoneNumber   string  `json:"phone_number"`
+	Amount        float64 `json:"amount"`
+	ActualCost    float64 `json:"actual_cost"`
+	Status        string  `json:"status"`
+	Reference     string  `json:"reference,omitempty"`
+	Provider      string  `json:"provider,omitempty"`
+	CreatedAt     string  `json:"created_at"`
+}

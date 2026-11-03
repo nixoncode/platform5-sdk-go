@@ -137,6 +137,15 @@ func TestServiceMethods(t *testing.T) {
 				"success": true, "message": "Balance retrieved",
 				"data": map[string]any{"available_balance": 1250.50, "current_balance": 1500.00, "currency": "KES"},
 			}
+		case "/v1/airtime/buy":
+			body = map[string]any{
+				"success": true, "message": "Airtime purchase successful",
+				"data": map[string]any{
+					"transaction_id": "1", "phone_number": "+254712345678",
+					"amount": 100.0, "actual_cost": 100.0, "status": "completed",
+					"created_at": "2024-06-01T10:00:00Z",
+				},
+			}
 		default:
 			body = map[string]any{
 				"success": true, "message": "Message retrieved",
@@ -189,6 +198,19 @@ func TestServiceMethods(t *testing.T) {
 		}
 		if resp.AvailableBalance != 1250.50 {
 			t.Fatalf("expected 1250.50, got %f", resp.AvailableBalance)
+		}
+	})
+
+	t.Run("Airtime.Buy", func(t *testing.T) {
+		resp, err := c.Airtime().Buy(ctx, BuyAirtimeRequest{PhoneNumber: "+254712345678", Amount: 100})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if resp.TransactionID != "1" {
+			t.Fatalf("expected 1, got %s", resp.TransactionID)
+		}
+		if resp.Status != "completed" {
+			t.Fatalf("expected completed, got %s", resp.Status)
 		}
 	})
 }
